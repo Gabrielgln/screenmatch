@@ -1,5 +1,6 @@
 package br.com.alura.screenmatch_jpa.principal;
 
+import br.com.alura.screenmatch_jpa.domain.Serie;
 import br.com.alura.screenmatch_jpa.domain.SerieDTO;
 import br.com.alura.screenmatch_jpa.domain.TemporadaDTO;
 import br.com.alura.screenmatch_jpa.service.ConsumoApi;
@@ -7,6 +8,7 @@ import br.com.alura.screenmatch_jpa.service.ConverteDados;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -78,6 +80,12 @@ public class Principal {
     }
 
     private void listarSeriesBuscadas() {
-        series.forEach(System.out::println);
+        List<Serie> serieList = series.stream()
+                .map(Serie::new)
+                .toList();
+
+        serieList.stream()
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
     }
 }
