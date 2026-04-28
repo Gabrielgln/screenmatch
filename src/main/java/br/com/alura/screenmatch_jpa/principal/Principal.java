@@ -1,16 +1,16 @@
 package br.com.alura.screenmatch_jpa.principal;
 
+import br.com.alura.screenmatch_jpa.domain.Episodio;
 import br.com.alura.screenmatch_jpa.domain.Serie;
 import br.com.alura.screenmatch_jpa.domain.SerieDTO;
 import br.com.alura.screenmatch_jpa.domain.TemporadaDTO;
+import br.com.alura.screenmatch_jpa.repository.SerieRepository;
 import br.com.alura.screenmatch_jpa.service.ConsumoApi;
 import br.com.alura.screenmatch_jpa.service.ConverteDados;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Principal {
     private Scanner leitura = new Scanner(System.in);
@@ -18,7 +18,12 @@ public class Principal {
     private ConverteDados conversor = new ConverteDados(new ObjectMapper());
     private static final String ENDERECO = "https://www.omdbapi.com/?t=";
     private static final String API_KEY = "&apikey=402e2999";
-    private List<SerieDTO> series = new ArrayList<>();
+    private SerieRepository serieRepository;
+    private List<Serie> series = new ArrayList<>();
+
+    public Principal(SerieRepository serieRepository){
+        this.serieRepository = serieRepository;
+    }
 
     public void exibeMenu(){
         int opcao = -1;
@@ -56,7 +61,7 @@ public class Principal {
 
     private void buscarSerieWeb(){
         SerieDTO serieDTO = this.getDadosSerie();
-        series.add(serieDTO);
+        serieRepository.save(new Serie(serieDTO));
         System.out.println(serieDTO);
     }
 
@@ -68,23 +73,40 @@ public class Principal {
     }
 
     private void buscarEpisodioPorSerie(){
-        SerieDTO serieDTO = this.getDadosSerie();
-        List<TemporadaDTO> temporadas = new ArrayList<>();
+        this.listarSeriesBuscadas();
+        System.out.println("Escolha uma serie pelo nome: ");
+        String nomeSerie = leitura.nextLine();
 
-        for (int i = 1; i <= serieDTO.totalTemporadas(); i++) {
-            String json = consumo.obterDados(ENDERECO + serieDTO.titulo().replace(" ", "+") + "&season=" + i + API_KEY);
-            temporadas.add(conversor.obterDados(json, TemporadaDTO.class));
+        Optional<Serie> serie = series.stream()
+                .filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase()))
+                .findFirst();
+
+        if(serie.isPresent()){
+            Serie serieEncontrada = serie.get();
+            List<TemporadaDTO> temporadas = new ArrayList<>();
+
+            for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
+                String json = consumo.obterDados(ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
+                temporadas.add(conversor.obterDados(json, TemporadaDTO.class));
+            }
+            temporadas.forEach(System.out::println);
+
+            List<Episodio> episodios = temporadas.stream()
+                    .flatMap(t -> t.episodios().stream()
+                            .map(e -> new Episodio(t.numero(), e))
+                    )
+                    .toList();
+
+            serieEncontrada.setEpisodios(episodios);
+            serieRepository.save(serieEncontrada);
+        } else {
+            System.out.println("Série não encontrada");
         }
-
-        temporadas.forEach(System.out::println);
     }
 
     private void listarSeriesBuscadas() {
-        List<Serie> serieList = series.stream()
-                .map(Serie::new)
-                .toList();
-
-        serieList.stream()
+        series = serieRepository.findAll();
+        series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }

@@ -1,16 +1,33 @@
 package br.com.alura.screenmatch_jpa.domain;
 
 import br.com.alura.screenmatch_jpa.enums.Categoria;
+import jakarta.persistence.*;
+
+import java.util.List;
 import java.util.OptionalDouble;
 
+@Entity
+@Table(name = "series")
 public class Serie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(unique = true)
     private String titulo;
     private Integer totalTemporadas;
     private Double avaliacao;
+    @Enumerated(EnumType.STRING)
     private Categoria genero;
     private String atores;
     private String poster;
     private String sinopse;
+    //mappedBy - Indica o nome do atributo na classe que está fazendo o relacionamento.
+    //CascadeType.ALL - Faz a alteração no relacionamento completo.
+    //FetchType.EAGER - Faz o carregamento mesmo de forma implícita.
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Episodio> episodios;
+
+    public Serie(){}
 
     public Serie(SerieDTO serieDTO){
         this.titulo = serieDTO.titulo();
@@ -20,6 +37,14 @@ public class Serie {
         this.atores = serieDTO.atores();
         this.poster = serieDTO.poster();
         this.sinopse = serieDTO.sinopse();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -78,6 +103,15 @@ public class Serie {
         this.sinopse = sinopse;
     }
 
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
+        this.episodios = episodios;
+    }
+
     @Override
     public String toString() {
         return "genero=" + genero +
@@ -86,6 +120,7 @@ public class Serie {
                 ", avaliacao=" + avaliacao +
                 ", atores='" + atores + '\'' +
                 ", poster='" + poster + '\'' +
-                ", sinopse='" + sinopse + '\'';
+                ", sinopse='" + sinopse + '\'' +
+                ", episodios='" + episodios + '\'';
     }
 }
