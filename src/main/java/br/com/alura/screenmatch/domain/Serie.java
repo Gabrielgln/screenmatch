@@ -1,6 +1,6 @@
-package br.com.alura.screenmatch_jpa.domain;
+package br.com.alura.screenmatch.domain;
 
-import br.com.alura.screenmatch_jpa.enums.Categoria;
+import br.com.alura.screenmatch.enums.Categoria;
 import jakarta.persistence.*;
 
 import java.util.List;

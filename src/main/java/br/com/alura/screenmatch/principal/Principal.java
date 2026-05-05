@@ -1,15 +1,14 @@
-package br.com.alura.screenmatch_jpa.principal;
+package br.com.alura.screenmatch.principal;
 
-import br.com.alura.screenmatch_jpa.domain.Episodio;
-import br.com.alura.screenmatch_jpa.domain.Serie;
-import br.com.alura.screenmatch_jpa.domain.SerieDTO;
-import br.com.alura.screenmatch_jpa.domain.TemporadaDTO;
-import br.com.alura.screenmatch_jpa.enums.Categoria;
-import br.com.alura.screenmatch_jpa.repository.SerieRepository;
-import br.com.alura.screenmatch_jpa.service.ConsumoApi;
-import br.com.alura.screenmatch_jpa.service.ConverteDados;
+import br.com.alura.screenmatch.domain.Episodio;
+import br.com.alura.screenmatch.domain.Serie;
+import br.com.alura.screenmatch.domain.SerieDTO;
+import br.com.alura.screenmatch.domain.TemporadaDTO;
+import br.com.alura.screenmatch.enums.Categoria;
+import br.com.alura.screenmatch.repository.SerieRepository;
+import br.com.alura.screenmatch.service.ConsumoApi;
+import br.com.alura.screenmatch.service.ConverteDados;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 

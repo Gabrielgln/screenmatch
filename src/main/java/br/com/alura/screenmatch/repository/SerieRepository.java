@@ -1,8 +1,8 @@
-package br.com.alura.screenmatch_jpa.repository;
+package br.com.alura.screenmatch.repository;
 
-import br.com.alura.screenmatch_jpa.domain.Episodio;
-import br.com.alura.screenmatch_jpa.domain.Serie;
-import br.com.alura.screenmatch_jpa.enums.Categoria;
+import br.com.alura.screenmatch.domain.Episodio;
+import br.com.alura.screenmatch.domain.Serie;
+import br.com.alura.screenmatch.enums.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

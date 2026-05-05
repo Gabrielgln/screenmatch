@@ -1,6 +1,6 @@
 spring:
   application:
-    name: screenmatch-jpa
+    name: screenmatch
   datasource:
     url: jdbc:postgresql://${DB_HOST}/${DB_NAME}
     username: ${DB_USER}

@@ -1,4 +1,4 @@
-package br.com.alura.screenmatch_jpa.enums;
+package br.com.alura.screenmatch.enums;
 
 public enum Categoria {
     ACAO("Action", "Ação"),

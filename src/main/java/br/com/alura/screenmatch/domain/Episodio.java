@@ -1,4 +1,4 @@
-package br.com.alura.screenmatch_jpa.domain;
+package br.com.alura.screenmatch.domain;
 
 import jakarta.persistence.*;
 

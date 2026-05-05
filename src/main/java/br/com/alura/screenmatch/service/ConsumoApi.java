@@ -1,4 +1,4 @@
-package br.com.alura.screenmatch_jpa.service;
+package br.com.alura.screenmatch.service;
 
 import java.net.URI;
 import java.net.http.HttpClient;
