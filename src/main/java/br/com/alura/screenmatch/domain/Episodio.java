@@ -22,17 +22,17 @@ public class Episodio {
 
     public Episodio(){}
 
-    public Episodio(Integer temporada, EpisodioDTO episodioDTO) {
+    public Episodio(Integer temporada, DadosEpisodio dadosEpisodio) {
         this.temporada = temporada;
-        this.titulo = episodioDTO.titulo();
-        this.numero = episodioDTO.numero();
+        this.titulo = dadosEpisodio.titulo();
+        this.numero = dadosEpisodio.numero();
         try{
-            this.avaliacao = Double.valueOf(episodioDTO.avaliacao());
+            this.avaliacao = Double.valueOf(dadosEpisodio.avaliacao());
         } catch (NumberFormatException e) {
             this.avaliacao = 0.0;
         }
         try{
-            this.dataLancamento = LocalDate.parse(episodioDTO.dataLancamento());
+            this.dataLancamento = LocalDate.parse(dadosEpisodio.dataLancamento());
         } catch (DateTimeParseException e){
             this.dataLancamento = null;
         }

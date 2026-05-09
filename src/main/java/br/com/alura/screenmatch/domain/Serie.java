@@ -29,14 +29,14 @@ public class Serie {
 
     public Serie(){}
 
-    public Serie(SerieDTO serieDTO){
-        this.titulo = serieDTO.titulo();
-        this.totalTemporadas = serieDTO.totalTemporadas();
-        this.avaliacao = OptionalDouble.of(Double.parseDouble(serieDTO.avaliacao())).orElse(0);
-        this.genero = Categoria.fromString(serieDTO.genero().split(",")[0].trim());
-        this.atores = serieDTO.atores();
-        this.poster = serieDTO.poster();
-        this.sinopse = serieDTO.sinopse();
+    public Serie(DadosSerie dadosSerie){
+        this.titulo = dadosSerie.titulo();
+        this.totalTemporadas = dadosSerie.totalTemporadas();
+        this.avaliacao = OptionalDouble.of(Double.parseDouble(dadosSerie.avaliacao())).orElse(0);
+        this.genero = Categoria.fromString(dadosSerie.genero().split(",")[0].trim());
+        this.atores = dadosSerie.atores();
+        this.poster = dadosSerie.poster();
+        this.sinopse = dadosSerie.sinopse();
     }
 
     public Long getId() {

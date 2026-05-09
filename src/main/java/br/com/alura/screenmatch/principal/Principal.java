@@ -2,8 +2,8 @@ package br.com.alura.screenmatch.principal;
 
 import br.com.alura.screenmatch.domain.Episodio;
 import br.com.alura.screenmatch.domain.Serie;
-import br.com.alura.screenmatch.domain.SerieDTO;
-import br.com.alura.screenmatch.domain.TemporadaDTO;
+import br.com.alura.screenmatch.domain.DadosSerie;
+import br.com.alura.screenmatch.domain.DadosTemporada;
 import br.com.alura.screenmatch.enums.Categoria;
 import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.ConsumoApi;
@@ -93,16 +93,16 @@ public class Principal {
     }
 
     private void buscarSerieWeb(){
-        SerieDTO serieDTO = this.getDadosSerie();
-        serieRepository.save(new Serie(serieDTO));
-        System.out.println(serieDTO);
+        DadosSerie dadosSerie = this.getDadosSerie();
+        serieRepository.save(new Serie(dadosSerie));
+        System.out.println(dadosSerie);
     }
 
-    private SerieDTO getDadosSerie(){
+    private DadosSerie getDadosSerie(){
         System.out.println("Digite o nome da série para busca:");
         String nomeSerie = leitura.nextLine();
         String json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
-        return conversor.obterDados(json, SerieDTO.class);
+        return conversor.obterDados(json, DadosSerie.class);
     }
 
     private void buscarEpisodioPorSerie(){
@@ -114,11 +114,11 @@ public class Principal {
 
         if(serie.isPresent()){
             Serie serieEncontrada = serie.get();
-            List<TemporadaDTO> temporadas = new ArrayList<>();
+            List<DadosTemporada> temporadas = new ArrayList<>();
 
             for (int i = 1; i <= serieEncontrada.getTotalTemporadas(); i++) {
                 String json = consumo.obterDados(ENDERECO + serieEncontrada.getTitulo().replace(" ", "+") + "&season=" + i + API_KEY);
-                temporadas.add(conversor.obterDados(json, TemporadaDTO.class));
+                temporadas.add(conversor.obterDados(json, DadosTemporada.class));
             }
             temporadas.forEach(System.out::println);
 
